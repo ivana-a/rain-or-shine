@@ -16,15 +16,15 @@ const Form = ({ findWeatherByCity, getAlertMessage }) => {
     }
 
     return (
-        <div>
-            <form onSubmit={onSubmitHandler}>
+        <div className='flex-container1'>
+            <form className='form' onSubmit={onSubmitHandler}>
                 <input
                     type="text"
                     className="form-control"
                     placeholder="Enter city..."
                     onChange={(e) => setCity(e.target.value)}
                 />
-                <button type='submit'>
+                <button className="button" type='submit'>
                     Enter
                 </button>
             </form>

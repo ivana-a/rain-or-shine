@@ -15,7 +15,7 @@ const GetWeather = () => {
         const firstCityLoad = async () => {
             const city = 'Cape Town'
             const res = await axios.get(
-                `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=e9629992d0bde86eaddc6391f50171b7`
+                `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=e9629992d0bde86eaddc6391f50171b7`
             );
             console.log(res.data);
             manipulatingData(res.data);
@@ -27,7 +27,7 @@ const GetWeather = () => {
     const findWeatherByCity = async (city) => {
         try {
             const res = await axios.get(
-                `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=e9629992d0bde86eaddc6391f50171b7`
+                `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=e9629992d0bde86eaddc6391f50171b7`
             );
             manipulatingData(res.data);
         } catch (error) {
@@ -60,13 +60,49 @@ const GetWeather = () => {
             pressure,
             description,
             id: weatherIcon(id),
-            deg: deg,
+            deg: windCard(deg),
             degIcon: windDirection(deg),
-            speed
+            speed: speed.toFixed(0)
         });
-        console.log(deg)
-        console.log(weatherData.deg)
-        console.log(weatherData.degIcon)
+        // console.log(deg)
+        // console.log(weatherData.deg)
+        // console.log(weatherData.degIcon)
+    }
+
+    const windCard = (rangeCard) => {
+        console.log(rangeCard)
+        // if (rangeCard === 300) {
+        //     return ('NNW')
+        // }
+        switch (true) {
+            case rangeCard === 0:
+                return 'N';
+
+            case rangeCard >= 1 && rangeCard <= 89:
+                return 'NE';
+
+            case rangeCard === 90:
+                return 'E';
+
+            case rangeCard >= 91 && rangeCard <= 179:
+                return 'SSE';
+
+            case rangeCard === 180:
+                return 'S';
+
+            case rangeCard >= 181 && rangeCard <= 269:
+                return 'SW';
+
+            case rangeCard === 270:
+                return 'W';
+
+            case rangeCard >= 271 && rangeCard <= 359:
+                return 'NW';
+
+            default:
+                return 'N';
+
+        }
     }
 
     const weatherIcon = (rangeId) => {
@@ -101,16 +137,6 @@ const GetWeather = () => {
 
     };
 
-    // const windDirection = (rangeDeg) => {
-
-    //     switch (true) {
-    //         case rangeDeg >= 0 && rangeDeg <= 360:
-    //             return 'from-158-deg';
-
-    //         default:
-    //             return 'from-45-deg';
-    //     }
-    // }
 
     const windDirection = (rangeDeg) => {
 
@@ -177,12 +203,13 @@ const GetWeather = () => {
 
     return (
         <div>
+
+
+            <Layout weatherData={weatherData} msgFunc />
             <Form
                 findWeatherByCity={findWeatherByCity} getAlertMessage={getAlertMessage}
             />
             <Alert message={message} />
-            <Layout weatherData={weatherData} msgFunc />
-
         </div>
     )
 }
